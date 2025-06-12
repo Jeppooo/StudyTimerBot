@@ -158,7 +158,8 @@ const breakMenuMarkup = new InlineKeyboard()
   .text(statsButton, statsButton);
 const statsMenuMarkup = new InlineKeyboard()
   .text(studyButton, studyButton)
-  .text(stopButton, stopButton);
+  .text(stopButton, stopButton)
+  .text(backButton, backButton)
 const stopMenuMarkup = new InlineKeyboard()
   .text(studyButton, studyButton)
   .text(breakButton, breakButton)
@@ -205,7 +206,7 @@ bot.callbackQuery(helpButton, async (ctx) => {
   userState[ctx.from.id] = helpMenu;
 
   await ctx.editMessageText(helpMenu, {
-    
+
     parse_mode: "HTML",
     reply_markup: helpMenuMarkup,
   });
@@ -238,6 +239,11 @@ bot.callbackQuery(backButton, async (ctx) => {
       reply_markup: startMenuMarkup,
     });
   } else if (last === helpMenu1) {
+    await ctx.editMessageText(choiceMenu, {
+      parse_mode: "HTML",
+      reply_markup: choiceMenuMarkup
+    })
+  } else if (last === statsMenu(todayMinutes, weeklyMinutes)) {
     await ctx.editMessageText(choiceMenu, {
       parse_mode: "HTML",
       reply_markup: choiceMenuMarkup
@@ -276,7 +282,7 @@ bot.callbackQuery(studyButton, async (ctx) => {
   userState[userId] = statsMenu(todayMinutes, weeklyMinutes)
   const message = statsMenu(todayMinutes, weeklyMinutes);
   await ctx.editMessageText(message, {
-    reply_markup: studyMenuMarkup,
+    reply_markup: statsMenuMarkup,
     parse_mode: "HTML"
   })
 }) 
